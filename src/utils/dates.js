@@ -23,6 +23,11 @@ export function toISODate(date) {
   return `${date.getFullYear()}-${month}-${day}`
 }
 
+// "2026-11-19T07:28:50.000Z" kabi vaqt belgisidan mahalliy sana ("YYYY-MM-DD")
+export function isoDateOfTimestamp(timestamp) {
+  return toISODate(new Date(timestamp))
+}
+
 export function parseISODate(iso) {
   const [year, month, day] = iso.split('-').map(Number)
   return new Date(year, month - 1, day)
