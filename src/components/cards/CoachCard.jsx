@@ -24,7 +24,7 @@ export default function CoachCard({ coach, variant = 'full' }) {
             Haftalik: {coach.weeklyHours} dars soati
           </span>
           <Link
-            to={`/jadval?murabbiy=${coach.id}`}
+            to={`/jadval?murabbiy=${coach.id}#slotlar`}
             className="font-bold text-ocean-700 transition-colors hover:text-ocean-900"
           >
             {variant === 'compact' ? 'Jadvalni ko\'rish →' : 'Darsga yozilish →'}
