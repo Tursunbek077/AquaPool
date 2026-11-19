@@ -21,6 +21,7 @@ export const footerServices = [
 ]
 
 export const footerInfo = [
+  { label: 'Shaxsiy kabinet', to: '/kabinet' },
   { label: "Mashg'ulotlar jadvali", to: '/jadval' },
   { label: "A'zolik paketlari", to: '/narxlar' },
   { label: "Ko'p beriladigan savollar", to: '/aloqa#faq' },
