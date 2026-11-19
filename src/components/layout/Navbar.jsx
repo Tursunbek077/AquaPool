@@ -3,7 +3,9 @@ import { Link, useLocation } from 'react-router'
 import { Menu, Phone, X } from 'lucide-react'
 import { publicNav } from '../../data/navigation'
 import { siteInfo } from '../../data/siteInfo'
+import { useProfile } from '../../hooks/useProfile'
 import { cn } from '../../utils/cn'
+import { initialsOf } from '../../utils/formatters'
 import { Button } from '../common'
 import Logo from './Logo'
 
@@ -23,8 +25,23 @@ function isItemActive(item, location) {
   return !siblingHashes.some((n) => n.hash === location.hash)
 }
 
+// Profil rasmi yoki ismning bosh harflari
+function Avatar({ profile }) {
+  return profile.avatar ? (
+    <img src={profile.avatar} alt="" className="size-8 rounded-full border border-aqua-300 object-cover" />
+  ) : (
+    <span
+      aria-hidden="true"
+      className="flex size-8 items-center justify-center rounded-full bg-ocean-600 text-xs font-bold text-white"
+    >
+      {initialsOf(profile.name)}
+    </span>
+  )
+}
+
 export default function Navbar() {
   const location = useLocation()
+  const { profile, isSignedIn } = useProfile()
   // Menyu qaysi manzilda ochilgani saqlanadi: sahifa almashsa u o'zi yopilib qoladi
   const locationKey = location.pathname + location.hash
   const [openAt, setOpenAt] = useState(null)
@@ -65,9 +82,20 @@ export default function Navbar() {
             <Phone className="size-4 text-ocean-600" aria-hidden="true" />
             {siteInfo.phone}
           </a>
-          <Button as={Link} to="/kirish" variant="ghost" size="sm">
-            Kirish
-          </Button>
+          {isSignedIn ? (
+            <Link
+              to="/kabinet/bronlar"
+              aria-label="Shaxsiy kabinet"
+              className="flex items-center gap-2 rounded-lg py-1 pl-1 pr-2.5 text-sm font-semibold text-navy-900 transition-colors hover:bg-aqua-100"
+            >
+              <Avatar profile={profile} />
+              <span className="max-w-24 truncate">{profile.name.split(' ')[0]}</span>
+            </Link>
+          ) : (
+            <Button as={Link} to="/kirish" variant="ghost" size="sm">
+              Kirish
+            </Button>
+          )}
           <Button as={Link} to="/jadval" size="sm">
             Bron qilish
           </Button>
@@ -114,9 +142,15 @@ export default function Navbar() {
               {siteInfo.phone}
             </a>
             <div className="mt-2 grid grid-cols-2 gap-3">
-              <Button as={Link} to="/kirish" variant="soft" fullWidth>
-                Kirish
-              </Button>
+              {isSignedIn ? (
+                <Button as={Link} to="/kabinet/bronlar" variant="soft" fullWidth>
+                  Kabinet
+                </Button>
+              ) : (
+                <Button as={Link} to="/kirish" variant="soft" fullWidth>
+                  Kirish
+                </Button>
+              )}
               <Button as={Link} to="/jadval" fullWidth>
                 Bron qilish
               </Button>

@@ -159,7 +159,29 @@ export async function cancelBooking(id, now = new Date()) {
   await wait(200)
 }
 
-// Admin: tasdiqlash / rad etish (5-bosqich va Telegram tugmalari uchun)
+// Mijozning bronlari: telefon raqami bo'yicha (raqam formati farqi e'tiborga olinmaydi)
+export function bookingsOfPhone(bookings, phone) {
+  const digits = digitsOnly(phone)
+  if (!digits) return []
+  return bookings.filter((booking) => digitsOnly(booking.phone) === digits)
+}
+
+// Kelgusi (faol va hali boshlanmagan) va tarix (o'tgan, bekor qilingan, rad etilgan) bronlar
+export function splitBookings(bookings, now = new Date()) {
+  const upcoming = []
+  const history = []
+  bookings.forEach((booking) => {
+    const active = booking.status === 'pending' || booking.status === 'confirmed'
+    const notStarted = new Date(booking.startsAt).getTime() > now.getTime()
+    if (active && notStarted) upcoming.push(booking)
+    else history.push(booking)
+  })
+  upcoming.sort((a, b) => new Date(a.startsAt) - new Date(b.startsAt))
+  history.sort((a, b) => new Date(b.startsAt) - new Date(a.startsAt))
+  return { upcoming, history }
+}
+
+// Admin: tasdiqlash / rad etish (admin panel va Telegram tugmalari uchun)
 export async function setBookingStatus(id, status) {
   if (!BOOKING_STATUSES.includes(status)) throw new BookingError('STATUS', "Noto'g'ri holat")
   const bookings = loadBookings()

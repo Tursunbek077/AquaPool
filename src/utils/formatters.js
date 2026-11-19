@@ -11,6 +11,19 @@ export function todayISO() {
   return `${now.getFullYear()}-${month}-${day}`
 }
 
+// "Aliyev Jasur" -> "AJ" (rasmi yo'q profil uchun)
+export function initialsOf(name) {
+  return (
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .map((part) => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || '?'
+  )
+}
+
 // Telefon raqamini "+998 90 123-45-67" ko'rinishiga keltiradi (yozish paytida ishlaydi)
 export function formatPhoneInput(raw) {
   let digits = String(raw).replace(/\D/g, '')

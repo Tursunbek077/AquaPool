@@ -1,13 +1,16 @@
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
 import AdminLayout from './layouts/AdminLayout'
 import CustomerLayout from './layouts/CustomerLayout'
 import MainLayout from './layouts/MainLayout'
 import ContactPage from './pages/ContactPage'
 import CoachesPage from './pages/CoachesPage'
 import HomePage from './pages/HomePage'
+import MembershipPage from './pages/MembershipPage'
+import MyBookingsPage from './pages/MyBookingsPage'
 import NotFoundPage from './pages/NotFoundPage'
 import PlaceholderPage from './pages/PlaceholderPage'
 import PricingPage from './pages/PricingPage'
+import ProfilePage from './pages/ProfilePage'
 import SchedulePage from './pages/SchedulePage'
 import ServicesPage from './pages/ServicesPage'
 
@@ -30,10 +33,10 @@ export default function App() {
 
       {/* Mijoz kabineti (5-bosqich) */}
       <Route path="kabinet" element={<CustomerLayout />}>
-        <Route index element={<PlaceholderPage title="Mening bronlarim" stage={5} />} />
-        <Route path="bronlar" element={<PlaceholderPage title="Mening bronlarim" stage={5} />} />
-        <Route path="azolik" element={<PlaceholderPage title="A'zolik va to'lovlar" stage={5} />} />
-        <Route path="profil" element={<PlaceholderPage title="Mening profilim" stage={5} />} />
+        <Route index element={<Navigate to="bronlar" replace />} />
+        <Route path="bronlar" element={<MyBookingsPage />} />
+        <Route path="azolik" element={<MembershipPage />} />
+        <Route path="profil" element={<ProfilePage />} />
       </Route>
 
       {/* Admin panel (5-bosqich) */}

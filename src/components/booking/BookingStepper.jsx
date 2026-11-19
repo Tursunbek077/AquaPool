@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Banknote, CalendarDays, Check, CircleAlert, Clock, Copy, Minus, Plus, Receipt, User } from 'lucide-react'
 import { GENDER_OPTIONS, MAX_PEOPLE_PER_BOOKING } from '../../data/initialSchedule'
 import { useBookings } from '../../hooks/useBookings'
+import { useProfile } from '../../hooks/useProfile'
 import { cn } from '../../utils/cn'
 import { longDate, weekdayName } from '../../utils/dates'
 import { formatPhoneInput, formatPrice } from '../../utils/formatters'
@@ -133,9 +134,11 @@ function SuccessView({ booking, slot, onCopy, copied }) {
 // 3 qadamli bron: 1) mashg'ulot va kishilar soni, 2) ma'lumotlar, 3) to'lov usuli va tasdiq.
 export default function BookingStepper({ slot, onClose }) {
   const { create } = useBookings()
+  const { profile, save: saveProfile } = useProfile()
   const [step, setStep] = useState(1)
   const [people, setPeople] = useState(1)
-  const [form, setForm] = useState({ name: '', phone: '', comment: '' })
+  // Kirgan mijozning ism va telefoni oldindan to'ldiriladi
+  const [form, setForm] = useState({ name: profile.name, phone: profile.phone, comment: '' })
   const [payment, setPayment] = useState('onsite')
   const [errors, setErrors] = useState({})
   const [submitError, setSubmitError] = useState('')
@@ -175,6 +178,14 @@ export default function BookingStepper({ slot, onClose }) {
         payment,
       })
       setBooking(created)
+      // Profil bo'sh bo'lsa, bron ma'lumotlari saqlanadi: "Mening bronlarim" bronni darhol topadi
+      if (!profile.phone) {
+        try {
+          saveProfile({ name: created.name, phone: created.phone })
+        } catch {
+          // profilni saqlab bo'lmasa ham bron qabul qilingan
+        }
+      }
     } catch (error) {
       setSubmitError(error?.message || "Bron qilib bo'lmadi, qayta urinib ko'ring.")
     } finally {
