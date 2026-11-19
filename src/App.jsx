@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
 import PlaceholderPage from './pages/PlaceholderPage'
 import PricingPage from './pages/PricingPage'
+import SchedulePage from './pages/SchedulePage'
 import ServicesPage from './pages/ServicesPage'
 
 // Yo'llar (TZ sitemap). Sahifalar 3-6 bosqichlarda PlaceholderPage o'rniga yoziladi.
@@ -19,7 +20,7 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="xizmatlar" element={<ServicesPage />} />
         <Route path="narxlar" element={<PricingPage />} />
-        <Route path="jadval" element={<PlaceholderPage title="Jadval va Onlayn bron" stage={4} />} />
+        <Route path="jadval" element={<SchedulePage />} />
         <Route path="murabbiylar" element={<CoachesPage />} />
         <Route path="aloqa" element={<ContactPage />} />
         <Route path="kirish" element={<PlaceholderPage title="Kirish" stage={6} />} />

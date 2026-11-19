@@ -3,7 +3,9 @@ import { useLocation } from 'react-router'
 
 // Sahifa almashganda tepaga qaytaradi; #anchor bo'lsa shu bo'limga olib boradi.
 export default function ScrollToTop() {
-  const { pathname, hash } = useLocation()
+  const { pathname, hash, search } = useLocation()
+  // Filtr o'zgarganda (?murabbiy=...) sahifa tepaga sakramasligi uchun query faqat #anchor bo'lganda hisobga olinadi
+  const anchorSearch = hash ? search : ''
 
   useEffect(() => {
     if (hash) {
@@ -14,7 +16,7 @@ export default function ScrollToTop() {
       }
     }
     window.scrollTo({ top: 0, left: 0 })
-  }, [pathname, hash])
+  }, [pathname, hash, anchorSearch])
 
   return null
 }

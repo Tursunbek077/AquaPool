@@ -1,18 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { CalendarDays, Clock, Droplets } from 'lucide-react'
-import { initialServices } from '../../data/initialServices'
+import { TIME_BANDS } from '../../data/initialSchedule'
+import { getScheduleDates, getScheduleServices } from '../../services/scheduleService'
 import { todayISO } from '../../utils/formatters'
 import { Button, Card, Input, Select } from '../common'
 
-const TIME_OPTIONS = [
-  { value: 'ertalab', label: 'Ertalab (06:00 - 11:00)' },
-  { value: 'kunduz', label: 'Kunduzi (11:00 - 17:00)' },
-  { value: 'kechqurun', label: 'Kechqurun (17:00 - 21:00)' },
-  { value: 'kech', label: 'Kech (21:00 - 23:00)' },
-]
+const TIME_OPTIONS = TIME_BANDS
 
-const SERVICE_OPTIONS = initialServices.map((service) => ({ value: service.id, label: service.title }))
+// Jadvalda mashg'uloti bor xizmatlar (boshqalari bo'yicha slot topilmasdi)
+const SERVICE_OPTIONS = getScheduleServices().map((service) => ({ value: service.id, label: service.title }))
 
 // Tezkor bron paneli: tanlovni Jadval sahifasiga query orqali uzatadi (4-bosqichda o'qiladi).
 export default function QuickBooking() {
@@ -46,6 +43,7 @@ export default function QuickBooking() {
               id="quick-date"
               type="date"
               min={todayISO()}
+              max={getScheduleDates().at(-1)}
               value={date}
               onChange={(e) => setDate(e.target.value)}
               icon={<CalendarDays className="size-4 text-ocean-600" />}
